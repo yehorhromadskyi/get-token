@@ -24,7 +24,7 @@ namespace GetToken
 
                 using (new LoadingIndicator().Show())
                 {
-                  token = await TokenService.GetTokenAsync(username, password);
+                    token = await TokenService.GetTokenAsync(username, password);
                 }
 
                 PrintToken(token);
