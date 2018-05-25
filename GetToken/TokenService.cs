@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Runtime.InteropServices;
+﻿using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Security;
 using System.Threading.Tasks;
@@ -15,21 +13,9 @@ namespace GetToken
         {
             var request = (HttpWebRequest)WebRequest.Create(ServiceUrl);
 
-            request.Method = "AUTH";
+            request.Method = "POST";
 
-            IntPtr passwordPtr = IntPtr.Zero;
-
-            try
-            {
-                passwordPtr = Marshal.SecureStringToBSTR(password);
-                request.Headers.Add("X-AUTH-PWD", Marshal.PtrToStringBSTR(passwordPtr));
-            }
-            finally
-            {
-                Marshal.FreeBSTR(passwordPtr);
-            }
-
-            request.Headers.Add("X-AUTH-USR", username);
+            request.Credentials = new NetworkCredential(username, password);
 
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
